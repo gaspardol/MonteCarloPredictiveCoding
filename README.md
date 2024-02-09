@@ -15,11 +15,11 @@ MCPC bridges these two theoretical frameworks, presenting a comprehensive model 
 The repository includes:
 - `figure_2.py`, `figure_3.py`, `figure_4.py`, `figure_5.py`, `supplementary_figure.py`, and `table_1.py` contain the code to recreate the figures and the table from our paper.
 - `requirements.txt` contains the python dependencies of this repository.
-- `figures//` contains the output figures of the code.
-- `models//` contains trained models to generate figures.
-- `utils//` contains utility functions
-- `predictive_coding//` contains the code to simulate MCPC- and PC- models.
-- `Deep_Latent_Gaussian_Models//` contains code to simulate DLGMs.
+- `figures/` contains the output figures of the code.
+- `models/` contains trained models to generate figures.
+- `utils/` contains utility functions
+- `predictive_coding/` contains the code to simulate MCPC- and PC- models.
+- `Deep_Latent_Gaussian_Models/` contains code to simulate DLGMs.
 - `ResNet.py` contains the code to simulate ResNet-9 models.
 
 ## Usage
@@ -42,13 +42,6 @@ python supplementary_figure.py
 python table_1.py
 ```
 
-## Aknowledgements
-This repository builds upon the following repositories/codes:
-- https://github.com/YuhangSong/Prospective-Configuration
-- https://github.com/yiyuezhuo/Deep-Latent-Gaussian-Models
-- https://gist.github.com/atabakd/ed0f7581f8510c8587bc2f41a094b518
-
-
 ## Citation
 For those who find our work useful, here is how you can cite it:
 
@@ -67,3 +60,10 @@ For those who find our work useful, here is how you can cite it:
 
 ## Contact
 For any inquiries or questions regarding the project, please feel free to contact Gaspard Oliviers at gaspard.oliviers@pmb.ox.ac.uk.
+
+## Code Aknowledgements
+This repository builds upon the following repositories/codes:
+- https://github.com/YuhangSong/Prospective-Configuration
+- https://github.com/yiyuezhuo/Deep-Latent-Gaussian-Models
+- https://gist.github.com/atabakd/ed0f7581f8510c8587bc2f41a094b518
+
