@@ -1,0 +1,7 @@
+torch
+torchvision
+pytorch-fid
+seaborn
+tqdm
+pandas
+moviepy
