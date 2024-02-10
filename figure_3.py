@@ -96,7 +96,7 @@ def generation_linear_model(path_figures):
     fig, axs = plt.subplots(1, 1, constrained_layout=True, figsize=(4, 6))
     fig.set_figwidth(5)
     fps=50
-    data_indent=25
+    data_indent=1
     
     def make_frames_mc(t):
         axs.clear()
@@ -161,21 +161,22 @@ def generation_non_linear_model(path_figures, path_models):
     mc_results = mcpc_trainer.train_on_batch(inputs=pseudo_input, loss_fn=config["loss_fn"], loss_fn_kwargs={}, callback_after_t=random_step, callback_after_t_kwargs={'_pc_trainer':mcpc_trainer},is_sample_x_at_batch_start=False,is_log_progress=True,is_return_results_every_t=True,is_checking_after_callback_after_t=False, is_return_outputs=True)
             
     ims = [img.reshape(28,28).detach().sigmoid_().cpu().numpy() for img in mc_results["outputs"]]
-    ims = ims[config["mixing"]:]
+    # ims = ims[:]
     # get samples for figure
     nrow=2
     ncol=5
     f, axs = plt.subplots(nrow,ncol, sharey=True)
     indent= 3000
     for i in range(nrow*ncol):
-        axs[int(i/ncol), i%ncol].imshow(ims[i*indent], cmap='gray')
+        axs[int(i/ncol), i%ncol].imshow(ims[config["mixing"] + i*indent], cmap='gray')
         axs[int(i/ncol)][i%ncol].axis("off")
     plt.suptitle("Generated with sampler")
     plt.savefig(path_figures +"//3b_and_4d.svg")
     plt.show()
 
     # make animation
-    generate_video(ims[::5], show=True, save=True, title="input neuron activity", file_name="3b_and_4d")
+    data_indent = 20
+    generate_video(ims[::data_indent], show=True, save=True, title="input neuron activity", file_name="3b_and_4d")
 
 
 
@@ -185,4 +186,4 @@ if __name__ == "__main__":
     path_figures = pwd + "//figures"
 
     generation_linear_model(path_figures)
-    generation_non_linear_model(path_figures, path_models)
+    # generation_non_linear_model(path_figures, path_models)

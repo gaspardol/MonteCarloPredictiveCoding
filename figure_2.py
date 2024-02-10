@@ -261,14 +261,15 @@ def posterior_non_linear_model(path_models, path_figures, img_kept=0.5):
             plt.savefig(path_figures + "//"+name+".svg")
         plt.close()
 
-        fps=100        
+        fps=100    
+        data_indent = 5    
         fig, axs = plt.subplots(1, 1, constrained_layout=True)
         axs.set_aspect('equal')
         plt.axis('off')
         def make_frames_mc(t):
             axs.clear()
             axs.axis('off')
-            idx_time = int(t*fps)
+            idx_time = int(t*fps*data_indent)
             coor, class_coor = proba_to_coordinate(preds_mcpc[idx_batch, idx_time, :])
             coor_previous, _  = proba_to_coordinate(preds_mcpc[idx_batch, :idx_time+1,:])
             axs.hexbin(coor_previous[0],coor_previous[1], gridsize=gridsize, cmap='Blues', bins=idx_time,extent=(-1, 1, -1, 1), label=r"hist($x_L(t)$), [0, t]")
@@ -281,7 +282,7 @@ def posterior_non_linear_model(path_models, path_figures, img_kept=0.5):
             title = "MCPC inference for full image" if img_kept==1 else "MCPC inference for masked image"
             axs.set_title(title, fontsize=14)
             return mplfig_to_npimage(axs.get_figure()) if axs is not None else mplfig_to_npimage(fig)
-        duration_mc=preds_mcpc.shape[1]/fps
+        duration_mc=preds_mcpc.shape[1]/(fps*data_indent)
         animation_mc = VideoClip(make_frames_mc, duration=duration_mc)
         animation_mc.write_gif(path_figures + "//digit_posteriors//"+file_type +"_"+str(idx_batch)+".gif",fps=fps)
         if idx_batch==4:
