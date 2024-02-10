@@ -90,7 +90,7 @@ def similarity_increase_digit(ax=None, data=None, epochs=[0, 5, 10, 15], path_mo
                 mcpc_trainer_gen = get_mcpc_trainer(gen_pc, config_gen, training=False)
                 
                 model_name = model_name_base + "epoch"+str(epoch) if epoch!=0 else model_name_base + "epoch_init"
-                gen_pc.load_state_dict(torch.load(model_name, map_location='cuda:0'), strict=False)
+                gen_pc.load_state_dict(torch.load(model_name), strict=False)
 
                 # load all data
                 data, _ = list(test_loader)[0]
