@@ -96,7 +96,7 @@ def generation_linear_model(path_figures):
     fig, axs = plt.subplots(1, 1, constrained_layout=True, figsize=(4, 6))
     fig.set_figwidth(5)
     fps=50
-    data_indent=2
+    data_indent=5
     
     def make_frames_mc(t):
         axs.clear()

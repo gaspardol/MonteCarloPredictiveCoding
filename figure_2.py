@@ -264,7 +264,7 @@ def posterior_non_linear_model(path_models, path_figures, img_kept=0.5):
         # save animation for figure shown in manuscipt
         if idx_batch==4:
             fps=100    
-            data_indent = 5    
+            data_indent = 15    
             fig, axs = plt.subplots(1, 1, constrained_layout=True)
             axs.set_aspect('equal')
             plt.axis('off')
