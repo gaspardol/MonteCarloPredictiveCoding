@@ -47,7 +47,7 @@ For those who find our work useful, here is how you can cite it:
 
 ```bibtex
 @article{Oliviers2024,
-  title={Monte Carlo Predictive Coding: A Unifying Theory of Cortical Computation},
+  title={Learning probability distributions of sensory inputs with Monte Carlo Predictive Coding},
   author={Oliviers, Gaspard and Bogacz, Rafal and Meulemans, Alexander},
   journal={Journal Name},
   volume={XX},
