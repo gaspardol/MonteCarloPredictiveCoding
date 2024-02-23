@@ -125,7 +125,7 @@ def varying_langevin_noise(path_figures, noise_vars):
     if len(noise_vars)>4:
         setup_fig(zero=True)
         plt.figure()
-        plt.plot(noise_vars,results_var,linewidth=3)
+        plt.plot(noise_vars,results_var,linewidth=3, label="MCPC")
         plt.hlines(np.sqrt(var)**2, min(noise_vars), max(noise_vars), colors="black", label="data")
         plt.vlines(2*var, min(results_var), max(results_var), colors="grey", linestyles="dashed", label="learning limit")
         plt.legend()
@@ -138,9 +138,11 @@ def varying_langevin_noise(path_figures, noise_vars):
         plt.show(block=False)
 
         setup_fig(zero=True)
+        ideal_params = np.sqrt(2*var/noise_vars[noise_vars<=10] - 1)
         plt.figure()
         # plt.plot(noise_vars, np.array(results_weights)[:,0], label="bias",linewidth=3)
-        plt.plot(noise_vars, np.abs(np.array(results_weights)[:,1]),linewidth=3)
+        plt.plot(noise_vars[noise_vars<=10], ideal_params,"--k" ,label="ideal",linewidth=4)
+        plt.plot(noise_vars, np.abs(np.array(results_weights)[:,1]), 'C0', linewidth=3, label="MCPC")
         plt.vlines(2*var, min(np.abs(np.array(results_weights)[:,1])), max(np.abs(np.array(results_weights)[:,1])), colors="grey", linestyles="dashed", label="learning limit")
         plt.xlabel("Langevin noise variance $2\sigma^2$")
         plt.ylabel(r"learned |$W_0$|")
