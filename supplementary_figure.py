@@ -140,10 +140,10 @@ def varying_langevin_noise(path_figures, noise_vars):
         setup_fig(zero=True)
         plt.figure()
         # plt.plot(noise_vars, np.array(results_weights)[:,0], label="bias",linewidth=3)
-        plt.plot(noise_vars, np.array(results_weights)[:,1], label="weight",linewidth=3)
-        plt.vlines(2*var, min(np.array(results_weights)[:,1]), max(np.array(results_weights)[:,1]), colors="grey", linestyles="dashed", label="learning limit")
+        plt.plot(noise_vars, np.abs(np.array(results_weights)[:,1]),linewidth=3)
+        plt.vlines(2*var, min(np.abs(np.array(results_weights)[:,1])), max(np.abs(np.array(results_weights)[:,1])), colors="grey", linestyles="dashed", label="learning limit")
         plt.xlabel("Langevin noise variance $2\sigma^2$")
-        plt.ylabel(r"learned $W_0$")
+        plt.ylabel(r"learned |$W_0$|")
         plt.xscale('log')
         plt.legend(loc=0)
         plt.tight_layout()
@@ -153,8 +153,6 @@ def varying_langevin_noise(path_figures, noise_vars):
     plt.show()
     
     
-
-
 
 if __name__ == "__main__":
     pwd = os.getcwd()
