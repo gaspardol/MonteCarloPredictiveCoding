@@ -148,6 +148,7 @@ def varying_langevin_noise(path_figures, noise_vars):
         plt.ylabel(r"learned |$W_0$|")
         plt.xscale('log')
         plt.legend(loc=0)
+        plt.ylim(0,10)
         plt.tight_layout()
         plt.savefig(path_figures +"//SIc.svg")
         plt.show(block=False)
