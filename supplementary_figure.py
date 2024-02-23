@@ -38,6 +38,7 @@ def varying_langevin_noise(path_figures, noise_vars):
     pseudo_input = torch.zeros(batch_size, hidden_size)
     
     results_var=[]
+    results_weights=[]
     # noise variance
     for idx, noise_var in enumerate(iter(noise_vars)):
         # initialise model
@@ -66,8 +67,8 @@ def varying_langevin_noise(path_figures, noise_vars):
         # training
         for e in range(epochs):
             for data in tqdm(datas): #
-                mcpc_trainer.train_on_batch(inputs=pseudo_input,loss_fn=config_mcpc["loss_fn"],loss_fn_kwargs={'_target': data,'_var':config_mcpc["input_var"]},callback_after_t=random_step,
-                                            callback_after_t_kwargs={'_pc_trainer':mcpc_trainer, 'var':noise_var}, #
+                mcpc_trainer.train_on_batch(inputs=pseudo_input,loss_fn=config_mcpc["loss_fn"],loss_fn_kwargs={'_target': data,'_var':config_mcpc["input_var"]},
+                                            callback_after_t=random_step, callback_after_t_kwargs={'_pc_trainer':mcpc_trainer, 'var':noise_var}, #
                                             is_sample_x_at_batch_start=True,is_log_progress=False,is_return_results_every_t=False,is_checking_after_callback_after_t=False)
 
         ## generate samples of sensory stimuli
@@ -96,6 +97,9 @@ def varying_langevin_noise(path_figures, noise_vars):
         
         # extract std and mean of samples to compare 
         results_var.append(np.var(generated_dist))
+
+        # extract weights learned by model
+        results_weights.append([gen_pc[0].bias.item(), gen_pc[2].weight.item()])
 
         # true distribution
         y = np.linspace(-10,10,500)
@@ -131,6 +135,21 @@ def varying_langevin_noise(path_figures, noise_vars):
         plt.legend(loc=0)
         plt.tight_layout()
         plt.savefig(path_figures +"//SIb.svg")
+        plt.show(block=False)
+
+        setup_fig(zero=True)
+        plt.figure()
+        # plt.plot(noise_vars, np.array(results_weights)[:,0], label="bias",linewidth=3)
+        plt.plot(noise_vars, np.array(results_weights)[:,1], label="weight",linewidth=3)
+        plt.vlines(2*var, min(np.array(results_weights)[:,1]), max(np.array(results_weights)[:,1]), colors="grey", linestyles="dashed", label="learning limit")
+        plt.xlabel("Langevin noise variance $2\sigma^2$")
+        plt.ylabel(r"learned $W_0$")
+        plt.xscale('log')
+        plt.legend(loc=0)
+        plt.tight_layout()
+        plt.savefig(path_figures +"//SIc.svg")
+        plt.show(block=False)
+    
     plt.show()
     
     
