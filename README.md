@@ -46,16 +46,18 @@ python table_1.py
 For those who find our work useful, here is how you can cite it:
 
 ```bibtex
-@article{Oliviers2024,
-  title={Learning probability distributions of sensory inputs with Monte Carlo Predictive Coding},
-  author={Oliviers, Gaspard and Bogacz, Rafal and Meulemans, Alexander},
-  journal={Journal Name},
-  volume={XX},
-  number={YY},
-  pages={ZZ--AA},
-  year={2024},
-  publisher={Publisher}
+@article {Oliviers2024,
+	author = {Gaspard Oliviers and Rafal Bogacz and Alexander Meulemans},
+	title = {Learning probability distributions of sensory inputs with Monte Carlo Predictive Coding},
+	elocation-id = {2024.02.29.581455},
+	year = {2024},
+	doi = {10.1101/2024.02.29.581455},
+	publisher = {Cold Spring Harbor Laboratory},
+	URL = {https://www.biorxiv.org/content/early/2024/03/02/2024.02.29.581455},
+	eprint = {https://www.biorxiv.org/content/early/2024/03/02/2024.02.29.581455.full.pdf},
+	journal = {bioRxiv}
 }
+
 ```
 
 ## Contact
