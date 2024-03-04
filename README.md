@@ -13,7 +13,7 @@ MCPC bridges these two theoretical frameworks, presenting a comprehensive model 
 
 ## Structure of the repository
 The repository includes:
-- `figure_2.py`, `figure_3.py`, `figure_4.py`, `figure_5.py`, `supplementary_figure.py`, and `table_1.py` contain the code to recreate the figures and the table from our paper.
+- `figure_2.py`, `figure_3.py`, `figure_4.py`, `figure_5.py`, `figure_6.py`, and `table_1.py` contain the code to recreate the figures and the table from our paper.
 - `requirements.txt` contains the python dependencies of this repository.
 - `figures/` contains the output figures of the code.
 - `models/` contains trained models to generate figures.
@@ -38,7 +38,7 @@ python figure_2.py
 python figure_3.py
 python figure_4.py
 python figure_5.py
-python supplementary_figure.py
+python figure_6.py
 python table_1.py
 ```
 

@@ -119,7 +119,7 @@ def varying_langevin_noise(path_figures, noise_vars):
             plt.ylim([0,0.196])
             plt.title(r"$\sigma^2$ : " + str(noise_var/2))
             plt.tight_layout()
-            plt.savefig(path_figures +"//SIa_"+str(idx) + ".svg")
+            plt.savefig(path_figures +"//6a_"+str(idx) + ".svg")
             plt.show(block=False)
 
     if len(noise_vars)>4:
@@ -134,7 +134,7 @@ def varying_langevin_noise(path_figures, noise_vars):
         plt.xscale('log')
         plt.legend(loc=0)
         plt.tight_layout()
-        plt.savefig(path_figures +"//SIb.svg")
+        plt.savefig(path_figures +"//6b.svg")
         plt.show(block=False)
 
         setup_fig(zero=True)
@@ -150,7 +150,7 @@ def varying_langevin_noise(path_figures, noise_vars):
         plt.legend(loc=0)
         plt.ylim(0,10)
         plt.tight_layout()
-        plt.savefig(path_figures +"//SIc.svg")
+        plt.savefig(path_figures +"//6c.svg")
         plt.show(block=False)
     
     plt.show()
