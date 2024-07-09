@@ -26,6 +26,7 @@ random.seed(1)
 np.random.seed(2)
 torch.manual_seed(30)
 
+
 pwd = os.getcwd()
 path_models = pwd + "//models"
 
@@ -38,7 +39,7 @@ from utils.data import GratingDataset, NoiseDataset
 from utils.model import zero_fn
 from utils.training_evaluation import KLdivergence
 
-epochs=[0, 5, 10, 15]
+epochs=[0, 15]
 
 config = {
     #
@@ -54,7 +55,7 @@ config = {
     "loss_fn": bernoulli_fn ,
     "activation_fn": 'relu',
     #
-    "T_pc":1000,
+    "T_pc":1,
     "optimizer_x_fn_pc": optim.Adam,
     "optimizer_x_kwargs_pc":{"lr": 0.7},
     #
@@ -77,9 +78,10 @@ noise_dataset = NoiseDataset(config["batch_size_test"], size=28)
 noise_loader = DataLoader(noise_dataset, batch_size=config["batch_size_test"], shuffle=True)
 
 # select 5 neurons randomly
-rand_idx = [random.sample(range(config["input_size"]), 5)]
-rand_idx += [random.sample(range(config["hidden_size"]), 5)]
-rand_idx += [random.sample(range(config["hidden2_size"]), 5)]
+rand_idx = [None for i in range(3)]
+rand_idx[-1] = random.sample(range(config["hidden2_size"]), 5)
+rand_idx[-2] = random.sample(range(config["hidden_size"]), 5)
+rand_idx[-3] = random.sample(range(config["input_size"]), 5)
 
 kls_seed=[]
 seeds = range(10)
@@ -97,7 +99,7 @@ for seed in seeds:
         config_gen = copy.deepcopy(config)
         config_gen["mixing"] = 500
         config_gen["sampling"] = 9500
-        config_gen["optimizer_x_kwargs_mcpc"] = {"lr": 0.1}
+        config_gen["optimizer_x_kwargs_mcpc"] = {"lr": 0.05}
 
         pc_trainer_gen = get_pc_trainer(gen_pc, config_gen, is_mcpc=True, training=False)
         mcpc_trainer_gen = get_mcpc_trainer(gen_pc, config_gen, training=False)
@@ -148,10 +150,19 @@ for seed in seeds:
             posterior_gratings = posterior_gratings[:, rand_idx[latent]]
             posterior_noise = posterior_noise[:, rand_idx[latent]]
 
-            # compute KL divergence 
-            kls[latent, 0,idx] = KLdivergence(prior[::indent], posterior_natural[::indent])
-            kls[latent, 1,idx] = KLdivergence(prior[::indent], posterior_noise[::indent])
-            kls[latent, 2,idx] = KLdivergence(prior[::indent], posterior_gratings[::indent])
+            prior_unit = (prior - prior.mean(0))/ (prior.std(0) + 1e-6)
+            posterior_natural_unit = (posterior_natural - prior.mean(0))/ (prior.std(0) + 1e-6)
+            posterior_gratings_unit = (posterior_gratings - prior.mean(0))/ (prior.std(0) + 1e-6)
+            posterior_noise_unit = (posterior_noise - prior.mean(0))/ (prior.std(0) + 1e-6)
+
+            kls[latent, 0,idx] = KLdivergence(prior_unit[::indent], posterior_natural_unit[::indent])
+            kls[latent, 1,idx] = KLdivergence(prior_unit[::indent], posterior_noise_unit[::indent])
+            kls[latent, 2,idx] = KLdivergence(prior_unit[::indent], posterior_gratings_unit[::indent])
+
+            if kls[latent,0,idx] < 0 or kls[latent,1,idx] < 0 or kls[latent,2,idx] < 0:
+                print("negative KL divergence")
+                print(kls[latent, 0,idx], kls[latent, 1,idx], kls[latent, 2,idx])
+                raise ValueError
 
         del prior, posterior_noise, posterior_gratings, posterior_natural
     kls_seed.append(kls)
@@ -160,6 +171,7 @@ for seed in seeds:
 kls_seed = np.array(kls_seed)
 
 for latent in range(3):
+    setup_fig()
     plt.figure()
     # concatenate of data across seeds
     kls_np = np.concatenate([k.reshape(k.shape[0],k.shape[1], 1) for k in kls_seed[:,latent,:,:]], axis=2)
@@ -184,7 +196,8 @@ for latent in range(3):
     ax.set_xlabel('Epochs')
     ax.set_xticks(index + (bar_width * (len(types) - 1)) / 2)
     ax.set_xticklabels(conditions)  
-    plt.savefid("KL_divergence_latent_"+str(latent)+".png")
+    plt.tight_layout()
+    plt.savefig("figures/SI_kl_divergence_latent_"+ str(latent) +".svg")
 
 # save data
 np.save('similarity_all_layers.npy', kls_seed)
