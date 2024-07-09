@@ -21,7 +21,7 @@ torch.manual_seed(30)
 
 
     
-def similarity_increase_digit(ax=None, data=None, epochs=[0, 5, 10, 15], path_models="models"):
+def similarity_increase_digit(ax=None, data=None, epochs=[0, 15], path_models="models"):
     use_cuda = torch.cuda.is_available()
     use_cuda = False
     if use_cuda:
@@ -43,7 +43,7 @@ def similarity_increase_digit(ax=None, data=None, epochs=[0, 5, 10, 15], path_mo
             "loss_fn": bernoulli_fn ,
             "activation_fn": 'relu',
             #
-            "T_pc":1000,
+            "T_pc":1,
             "optimizer_x_fn_pc": optim.Adam,
             "optimizer_x_kwargs_pc":{"lr": 0.7},
             #
@@ -188,7 +188,7 @@ def similarity_increase_digit(ax=None, data=None, epochs=[0, 5, 10, 15], path_mo
         if p >= 0.05:
             text = f"{p:.2e}"
 
-        x1, x2 = 3, 3 + bar_width
+        x1, x2 = 1, 1 + bar_width
         y, h, col = (kls_mean + kls_sem)[:,-1].max()+0.1, 0.1, 'k'
         ax.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c=col)
         ax.text((x1+x2)*.5, y+h, text, ha='center', va='bottom', color=col)
@@ -206,7 +206,7 @@ def similarity_increase_digit(ax=None, data=None, epochs=[0, 5, 10, 15], path_mo
         if p >= 0.05:
             text = f"{p:.2e}"
 
-        x1, x2 = 3, 3 + 2*bar_width
+        x1, x2 = 1, 1 + 2*bar_width
         y, h, col = (kls_mean + kls_sem)[:,-1].max()+0.5, 0.1, 'k'
         ax.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c=col)
         ax.text((x1+x2)*.5, y+h, text, ha='center', va='bottom', color=col)
@@ -218,18 +218,20 @@ def similarity_increase_digit(ax=None, data=None, epochs=[0, 5, 10, 15], path_mo
 def berkes_2011(ax=None):
     
     kls_bar = np.array([[497.1496437,490.4988124,462.787015],
-        [176.8012668,207.2842439,203.9588282],
-        [99.76247031,71.49643705,273.2383215],
+        # [176.8012668,207.2842439,203.9588282],
+        # [99.76247031,71.49643705,273.2383215],
         [76.48456057,127.4742676,208.3927158]])
     kls_sem_bar = np.array([[606.3341251,560.8867775,467.7751386],
-        [196.7537609,220.5859066,220.5859066],
-        [126.9200317,78.70150435,275.4552652],
+        # [196.7537609,220.5859066,220.5859066],
+        # [126.9200317,78.70150435,275.4552652],
         [85.35233571,158.5114806,247.189232]])
 
     kls_sem_bar -= kls_bar # data is given in coordinates, remove mean to find error bar
 
     # Set up the bar chart
-    conditions = ['29-30', '44-45', '83-92', '129-151']
+    conditions = ['29-30',
+                #    '44-45', '83-92', 
+                   '129-151']
     types = ['natural stimuli', 'noise', 'gratings']
     colors = ['C0', 'C1', 'C2']
     index = np.arange(len(conditions))
@@ -252,11 +254,11 @@ def berkes_2011(ax=None):
     ax.set_xticklabels(conditions)
     ax.legend()
 
-    x1, x2 = 3, 3 + bar_width
+    x1, x2 = 1, 1 + bar_width
     y, h, col = (kls_bar)[-1,:].max(), 20, 'k'
     ax.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c=col)
     ax.text((x1+x2)*.5, y+h, "*", ha='center', va='bottom', color=col)
-    x1, x2 = 3, 3 + 2*bar_width
+    x1, x2 = 1, 1 + 2*bar_width
     y, h, col = (kls_bar+ kls_sem_bar)[-1,:].max()+20, 20, 'k'
     ax.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c=col)
     ax.text((x1+x2)*.5, y+h, "**", ha='center', va='bottom', color=col)
@@ -536,3 +538,5 @@ if __name__ == "__main__":
 
     # variability_quenching(path_models, path_figures)
     similarity_increase(path_models, path_figures)
+
+    berkes_2011()
